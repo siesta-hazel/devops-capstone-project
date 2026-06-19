@@ -20,7 +20,8 @@ DATABASE_URI = os.getenv(
 
 BASE_URL = "/accounts"
 
-# To get the Flask test client to use https with the environ_overrides attribute.
+# To get the Flask test client to use https with the environ_overrides
+# attribute.
 # When making an URL call, pass environ_overrides=HTTPS_ENVIRON
 HTTPS_ENVIRON = {'wsgi.url_scheme': 'https'}
 
@@ -39,7 +40,8 @@ class TestAccountService(TestCase):
         app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
         app.logger.setLevel(logging.CRITICAL)
         init_db(app)
-        # Talisman will force all requests to your REST API to use the https:// protocol.
+        # Talisman will force all requests to your REST API to use the
+        # https:// protocol.
         # This is a good thing, except perhaps when testing (-> all tests will fail).
         talisman.force_https = False
 
@@ -71,7 +73,7 @@ class TestAccountService(TestCase):
             self.assertEqual(
                 response.status_code,
                 status.HTTP_201_CREATED,
-                "Could not create test Account",
+                "Could not create test Account"
             )
             new_account = response.get_json()
             account.id = new_account["id"]
@@ -183,7 +185,10 @@ class TestAccountService(TestCase):
             "date_joined": "2024-12-15"
         }
         account.deserialize(updated_data)
-        response = self.client.put(f"{BASE_URL}/{account.id}", json=account.serialize())
+        response = self.client.put(
+            f"{BASE_URL}/{account.id}",
+            json=account.serialize()
+        )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_json = response.get_json()
         updated_account = Account().deserialize(response_json)
@@ -226,9 +231,7 @@ class TestAccountService(TestCase):
     def test_delete_account(self):
         """Delete: It should Delete an Account"""
         account = self._create_accounts(1)[0]
-        response = self.client.delete(
-            f"{BASE_URL}/{account.id}"
-        )
+        response = self.client.delete(f"{BASE_URL}/{account.id}")
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         # Data of response as text.
         # Otherwise, it returns 'b""' and not just '""'.
@@ -264,3 +267,4 @@ class TestAccountService(TestCase):
         self.assertEqual(len(response.get_json()), 0)
         # Just to be sure
         self.assertEqual(len(Account.all()), 0)
+    
