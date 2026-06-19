@@ -1,6 +1,6 @@
 ---
 name: User Story
-description: Template for product features and requirements
+about: Template for product features and requirements
 title: 'User Story: [Title]'
 labels: ['user-story']
 ---
